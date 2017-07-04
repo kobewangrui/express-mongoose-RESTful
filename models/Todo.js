@@ -3,7 +3,10 @@ let mongoose = require('mongoose');
 let TodoSchema = new mongoose.Schema({
     name:String,
     completed:Boolean,
-    note:String,
+    note:{
+        type:String,
+        default:''
+    },
     updated_at:{
         type:Date,
         default:Date.now
