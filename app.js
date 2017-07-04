@@ -8,6 +8,20 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 
+//  链接数据库
+var MongoClient = require('mongodb').MongoClient;
+var DB_CONN_STR = 'mongodb://localhost:27017/runoob';
+MongoClient.connect(DB_CONN_STR, function(err, db) {
+    if(err){
+        console.log('connection error',err);
+    }else{
+        console.log('connection MongoDB successful');
+    }
+});
+
+
+
+
 var app = express();
 
 // view engine setup
