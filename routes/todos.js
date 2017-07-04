@@ -12,8 +12,8 @@ router.get('/getList', function(req, res, next){
 });
 
 /* POST /todos */
-router.post('/', function(req, res, next) {
-  Todo.create(req.body, function (err, post) {
+router.post('/', function(req, res, next){
+  Todo.create(req.body, function (err, post){
     if (err) return next(err);
     res.json(post);
   });
