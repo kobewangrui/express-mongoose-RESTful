@@ -5,7 +5,7 @@ var Todo = require('../models/Todo.js');
 var User = require('../models/User.js');
 
 /* GET /todos listing. */
-router.get('/getList', function(req, res, next){
+router.get(`/getList`, function(req, res, next){
   Todo.find(function (err, resp) {
     if (err) return next(err);
     res.json(resp);
@@ -47,6 +47,14 @@ router.get('/addUser', function(req, res, next){
 
 
 
+router.get('/searchUser', function(req, res, next) {
+  Todo.find({'name':'这条数据'}, function (err, post) {
+    if (err) return next(err);
+    res.json(post);
+  });
+});
+
+
 
 /* POST /todos */
 router.post('/', function(req, res, next){
@@ -57,7 +65,7 @@ router.post('/', function(req, res, next){
 });
 
 /* GET /todos/id */
-router.get('/:id', function(req, res, next) {
+router.get('/search/:id', function(req, res, next) {
   Todo.findById(req.params.id, function (err, post) {
     if (err) return next(err);
     res.json(post);
