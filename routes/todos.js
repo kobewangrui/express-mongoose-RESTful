@@ -46,14 +46,21 @@ router.get('/addUser', function(req, res, next){
   });
 
 
-
+// get查询年龄
 router.get('/searchUser', function(req, res, next) {
-  Todo.find({'name':'这条数据'}, function (err, post) {
+  User.find({"age":req.query.age}, function (err, post) {
     if (err) return next(err);
     res.json(post);
   });
 });
 
+// post查询年龄
+router.post('/searchs', function(req, res, next) {
+  User.find({"age":req.body.age,"name":req.body.name}, function (err, post) {
+    if (err) return next(err);
+    res.json(post);
+  });
+});
 
 
 /* POST /todos */
