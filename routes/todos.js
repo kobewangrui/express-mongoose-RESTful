@@ -21,13 +21,25 @@ router.get('/addUser', function(req, res, next){
     age:24,
     date:new Date()
   })
-  console.log(req.body)
   newUser.save(function (err, resp) {
     if (err) return next(err);
     res.json(resp);
   });
 });
 
+
+
+router.get('/addTodos', function(req, res, next){
+  let newTodos = new Todo({
+    name:"www",
+    completed:true,
+    date:new Date()
+  })
+  newTodos.save(function (err, resp) {
+    if (err) return next(err);
+    res.json(resp);
+  });
+});
 
   router.get('/getUser', function(req, res, next){
     User.find(function (err, resp) {
@@ -69,7 +81,7 @@ router.post('/searchs', function(req, res, next) {
 
 
 /* POST /todos */
-router.post('/', function(req, res, next){
+router.post('/addTodos', function(req, res, next){
   Todo.create(req.body, function (err, post){
     if (err) return next(err);
     res.json(post);
