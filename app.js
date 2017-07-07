@@ -9,18 +9,10 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var todos = require('./routes/product/todos');
 var consumers = require('./routes/user/consumers');
-// load mongoose package
-var mongoose = require('mongoose');
-
-// Use native Node promises
-mongoose.Promise = global.Promise;
-
-// connect to MongoDB
-mongoose.connect('mongodb://localhost/todo-api')
-  .then(() =>  console.log('connection succesful'))
-  .catch((err) => console.error(err));
-
 var app = express();
+
+// 引入连接mongoDB模块
+require('./connect/')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

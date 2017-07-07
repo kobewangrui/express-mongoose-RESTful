@@ -50,7 +50,6 @@ router.post('/searchs', function(req, res, next) {
   if(req.body.age !== '' && req.body.age !== undefined){
     arg.age = req.body.age
   }
-  console.log(arg)
   User.find(arg, function (err, post) {
     if (err) return next(err);
     res.json(post);
