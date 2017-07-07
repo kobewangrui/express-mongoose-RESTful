@@ -1,5 +1,5 @@
 {
-  "name": "todo-api",
+  "name": "express-mongoose-restful-api",
   "version": "0.0.0",
   "private": true,
   "scripts": {

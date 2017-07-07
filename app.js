@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+// 路由
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
 app.use('/api/todos', require('./routes/product/todos'));
