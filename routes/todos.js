@@ -68,10 +68,13 @@ router.get('/searchUser', function(req, res, next) {
 
 // post查询年龄
 router.post('/searchs', function(req, res, next) {
-  let arg = {
-    name:req.body.name,
-    age:req.body.age
-  };
+  let arg = {};
+  if(req.body.name !== '' && req.body.name !== undefined){
+      arg.name = req.body.name
+  }
+  if(req.body.age !== '' && req.body.age !== undefined){
+    arg.age = req.body.age
+  }
   console.log(arg)
   User.find(arg, function (err, post) {
     if (err) return next(err);
