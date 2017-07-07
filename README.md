@@ -11,6 +11,9 @@ npm install
 <!--启动api-->
 npm start
 
+<!--热加载-->
+nodemon start
+
 <!--mongodb导出表-->
  mongoexport -d todo-api -c users -o e:/wrlData/user.json --type=josn 
 <!--mongodb导入表-->
