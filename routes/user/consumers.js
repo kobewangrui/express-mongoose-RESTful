@@ -32,7 +32,7 @@ router.post('/login',function(req,res,next){
 // 判断是否登录
 router.get('/',function(req,res,next){
   if(req.session.userName){
-      res.json({'code':200,'msg':'登录成功'})
+      res.json({'code':200,'msg':'登录成功','userName':req.session.userName})
   }else{
       res.json({'code':500,'msg':'尚未登录'})
   }
