@@ -4,6 +4,9 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
+
+
 
 var app = express();
 
@@ -19,13 +22,18 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('sessiontest'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret:'sessiontest', // 用来对session id相关的cookie进行签名
+  resave:false,  // 是否每次都重新保存会话，建议false
+  saveUninitialized:false  // 是否自动保存未初始化的会话，建议false
+}));
 
 // 路由
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
-app.use('/api/todos', require('./routes/product/todos'));
+app.use('/api/product', require('./routes/product/products'));
 app.use('/api/consumers',require('./routes/user/consumers'));
 
 // catch 404 and forward to error handler
