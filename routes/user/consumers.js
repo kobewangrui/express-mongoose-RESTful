@@ -11,7 +11,7 @@ router.post('/register', function(req, res, next){
   };
   User.create(newUser,function(err, post){
     if (err) return next(err);
-    res.json(post);
+    res.json({'code':200,'msg':'注册成功'})
   });
 });
 
@@ -22,11 +22,12 @@ router.post('/login',function(req,res,next){
     if (err) return next(err);
     if(post.passWord === req.body.passWord){
       req.session.userName = post.userName
-      res.json({'code':'200','msg':'登录成功'})
+      res.json({'code':200,'msg':'登录成功'})
     }else{
-      res.json({'code':'500','msg':'密码错误'})
+      res.json({'code':500,'msg':'密码错误'})
     }
   })
+  
 })
 
 // 判断是否登录
@@ -34,7 +35,10 @@ router.get('/',function(req,res,next){
   if(req.session.userName){
       res.json({'code':200,'msg':'登录成功','userName':req.session.userName})
   }else{
-      res.json({'code':500,'msg':'尚未登录'})
+      res.json({'code':500,'msg':'尚未登录'
+    
+    
+    })
   }
 })
 
