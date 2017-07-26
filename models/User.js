@@ -2,22 +2,21 @@ var mongoose = require('mongoose');
 var TodoSchema = new mongoose.Schema({
   userName:{
     type:String,
-    required:true,
+    required:'用户名不能为空',
     unique:true,
-
   },
   passWord:{
     type:String,
-    required:true
+    required:'密码不能为空'
   },
   phone:{
     type:String,
-    required:true,
+    required:'电话号码不能为空',
     unique:true
   },
   userType:{
     type:Number,
-    required:true,
+    required:'角色类型不能为空',
     default:1
   }
 });

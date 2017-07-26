@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-
 var TodoSchema = new mongoose.Schema({
   productId:{
     type:Number,
@@ -9,24 +8,23 @@ var TodoSchema = new mongoose.Schema({
   },
   title:{
     type:String,
-    required:true,
+    required:'标题不能为空',
   },
   date: {
     type:Date,
     default:Date.now,
-    required:true,
   },
   price:{
     type:Number,
-    required:true
+    required:'价格不能为空'
   },
   spicialPrice:{
     type:Number,
-    required:true
+    required:'特价不能为空'
   },
   allowance:{
     type:Number,
-    required:true
+    required:'余量不能为空'
   },
   imgUrl:{
     type:Array,
