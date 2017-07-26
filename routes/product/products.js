@@ -13,22 +13,16 @@ router.get(`/getList`, function(req, res, next){
 
 // post  添加产品
 router.post('/addProduct', function(req, res, next){
-  let arg = {};
-  if(req.body.title !== '' && req.body.title !== undefined){
-      arg.title = req.body.title
-  }
-  if(req.body.price !== '' && req.body.price !== undefined){
-      arg.price = req.body.price
-  }
-  if(req.body.spicialPrice !== '' && req.body.spicialPrice !== undefined){
-      arg.spicialPrice = req.body.spicialPrice
-  }
-  if(req.body.allowance !== '' && req.body.allowance !== undefined){
-      arg.allowance = req.body.allowance
-  }
+  let params = JSON.parse(Object.keys(req.body)[0])
+  let arg = {
+    title : params.title,
+    price : params.price,
+    spicialPrice : params.spicialPrice,
+    allowance : params.allowance
+  };
   Product.create(arg, function(err, post){
     if (err) return next(err);
-    res.json(post);
+    res.json({status:200,msg:'添加成功'});
   });
 });
 
