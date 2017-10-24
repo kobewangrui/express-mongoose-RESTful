@@ -14,7 +14,6 @@ router.get(`/getList`, function(req, res, next){
 // post  添加产品
 router.post('/addProduct', function(req, res, next){
   let params = req.body
-  console.log(req.body)
   let arg = {
     title : params.title,
     price : params.price,
