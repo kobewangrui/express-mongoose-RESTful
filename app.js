@@ -28,7 +28,9 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+// 自动解析前端的applicatoin/json请求体
 app.use(bodyParser.json());
+// 自动解析前端的applicatoin/x-www-form-urlencoded请求体
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('sessiontest'));
 app.use(express.static(path.join(__dirname, 'public')));
