@@ -4,7 +4,7 @@ var User = require('../../models/User.js');
 
 // 注册账户
 router.post('/register', function(req, res, next){
-  let newUser = {
+  let newUser = {//body x-www-urlencoded
     userName:req.body.userName,
     passWord:req.body.passWord,
     phone:req.body.phone
