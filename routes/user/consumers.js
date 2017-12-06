@@ -61,10 +61,8 @@ router.post('/accesstoken', (req, res) => {
 // passport-http-bearer token 中间件验证
 // 通过 header 发送 Authorization -> Bearer  + token
 // 或者通过 ?access_token = token
-router.get('/info',
-passport.authenticate('bearer', { session: false }),
-function(req, res) {
-  res.json({userName: req.user.name});
+router.get('/info',passport.authenticate('bearer', { session: false }),(req, res)=>{
+    res.json({userName: req.user.name});
 });
 
 
@@ -72,18 +70,38 @@ function(req, res) {
 
 
 // 登录
-router.post('/login',function(req,res,next){
-  User.findOne({'userName':req.body.userName},function(err,post){
-    if (err) return next(err);
-    if(post.passWord === req.body.passWord){
-      req.session.userName = post.userName
-      res.json({'code':200,'msg':'登录成功'})
-    }else{
-      res.json({'code':500,'msg':'密码错误'})
-    }
-  })
-  
-})
+// router.post('/login',function(req,res,next){
+//   User.findOne({'userName':req.body.userName},function(err,post){
+//     if (err) return next(err);
+//     if(post.passWord === req.body.passWord){
+//       req.session.userName = post.userName
+//       res.json({'code':200,'msg':'登录成功'})
+//     }else{
+//       console.log(post.passWord,req.body.passWord);
+//       res.json({'code':500,'msg':'密码错误'})
+//     }
+//   })
+// })
+
+// 检查用户名与密码并生成一个accesstoken如果验证通过
+router.post('/login', (req, res) => {
+  User.findOne({
+    userName: req.body.userName
+  }, (err, user) => {
+      // 检查密码是否正确
+      // 检查密码是否正确
+      user.comparePassword(req.body.passWord, (err, isMatch) => {
+        if (isMatch && !err) {
+          res.json({
+            code: 200,
+            msg: '验证成功!',
+          });
+        } else {
+          res.send({code:err, msg: isMatch});
+        }
+      });
+  });
+});
 
 // 判断是否登录
 router.get('/',function(req,res,next){

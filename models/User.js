@@ -29,7 +29,6 @@ var UserSchema = new mongoose.Schema({
 
 // 添加用户保存时中间件对password进行bcrypt加密,这样保证用户密码只有用户本人知道
 UserSchema.pre('save',function(next){
-  console.log(this);
   var user = this
   var rounds = 10;  // 处理数据的回合默认是10
   bcrypt.genSalt(10,function (err, salt){
@@ -47,6 +46,8 @@ UserSchema.pre('save',function(next){
 // 校验用户输入密码是否正确
 UserSchema.methods.comparePassword = function(passw, cb) {
   bcrypt.compare(passw, this.passWord, (err, isMatch) => {
+    console.log(passw,this.passWord);
+    console.log(err,isMatch);
       if (err) {
           return cb(err);
       }
