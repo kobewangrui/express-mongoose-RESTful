@@ -15,6 +15,9 @@ var UserSchema = new mongoose.Schema({
     required:'电话号码不能为空',
     unique:true
   },
+  token:{
+    type:String,
+  },
   userType:{
     type:Number,
     required:'角色类型不能为空',
@@ -42,13 +45,13 @@ UserSchema.pre('save',function(next){
 })
 
 // 校验用户输入密码是否正确
-// UserSchema.methods.comparePassword = function(passw, cb) {
-//   bcrypt.compare(passw, this.passWord, (err, isMatch) => {
-//       if (err) {
-//           return cb(err);
-//       }
-//       cb(null, isMatch);
-//   });
-// };
+UserSchema.methods.comparePassword = function(passw, cb) {
+  bcrypt.compare(passw, this.passWord, (err, isMatch) => {
+      if (err) {
+          return cb(err);
+      }
+      cb(null, isMatch);
+  });
+};
 
 module.exports = mongoose.model('User', UserSchema);
