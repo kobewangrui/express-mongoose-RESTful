@@ -1,10 +1,14 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
+var logger = require('morgan');//命令行log显示
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var passPort = require('passport');//用户认证模块
+var strategy = require ('passport-http-bearer');//token验证模块
+var config = require('./config/index')//全局配置
+
 
 var app = express();
 
@@ -38,6 +42,7 @@ app.use(session({
   resave:false,  // 是否每次都重新保存会话，建议false
   saveUninitialized:false  // 是否自动保存未初始化的会话，建议false
 }));
+app.use(passPort.initialize())//初始化passport模块
 
 // 路由
 app.use('/', require('./routes/index'));
