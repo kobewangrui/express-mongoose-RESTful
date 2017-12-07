@@ -48,12 +48,12 @@ UserSchema.pre('save',function(next){
 })
 
 // 校验用户输入密码是否正确
-UserSchema.methods.comparePassword = function(passw) {
+UserSchema.methods.comparePassword = function(passw,cb) {
   bcrypt.compare(passw, this.passWord, (err, isMatch) => {
       if (err) {
           return cb(err);
       }else{
-        
+        return cb(null,isMatch);
       }
   });
 };

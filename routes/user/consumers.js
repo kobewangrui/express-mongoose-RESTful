@@ -66,36 +66,27 @@ router.get('/info',passport.authenticate('bearer', { session: false }),(req, res
 });
 
 
-
-
-
-// 登录
-// router.post('/login',function(req,res,next){
-//   User.findOne({'userName':req.body.userName},function(err,post){
-//     if (err) return next(err);
-//     if(post.passWord === req.body.passWord){
-//       req.session.userName = post.userName
-//       res.json({'code':200,'msg':'登录成功'})
-//     }else{
-//       console.log(post.passWord,req.body.passWord);
-//       res.json({'code':500,'msg':'密码错误'})
-//     }
-//   })
-// })
-
-// 检查用户名与密码并生成一个accesstoken如果验证通过
+// 登录 并且验证密码
 router.post('/login', (req, res) => {
   User.findOne({
     userName: req.body.userName
   }, (err, user) => {
-      // 检查密码是否正确      
-      user.comparePassword(req.body.passWord, (err, isMatch) => {
-        if (isMatch && !err) {
-          res.json({'code':200,'msg':'登录成功'})
-        } else {
-          res.json({'code':500,'msg':'密码错误'})
+      // 检查密码是否正确
+      if(err){
+        return next(err);
+      }else{
+        if (!user) {
+          res.json({success: false, message:'用户不存在!'});
+        }else{
+          user.comparePassword(req.body.passWord, (err, isMatch) => {//验证密码
+            if (isMatch && !err) {
+              res.json({'code':200,'msg':'登录成功'})
+            } else {
+              res.json({'code':500,'msg':'密码错误'})
+            }
+          });
         }
-      });
+    }
   });
 });
 
