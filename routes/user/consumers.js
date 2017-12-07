@@ -21,41 +21,41 @@ router.post('/register', function(req, res, next){
 });
 
 // 检查用户名与密码并生成一个accesstoken如果验证通过
-router.post('/accesstoken', (req, res) => {
-  User.findOne({
-    userName: req.body.userName
-  }, (err, user) => {
-    if (err) {
-      throw err;
-    }
-    if (!user) {
-      res.json({success: false, message:'认证失败,用户不存在!'});
-    } else if(user) {
-      // 检查密码是否正确
-      user.comparePassword(req.body.passWord, (err, isMatch) => {
-        if (isMatch && !err) {
-          var token = jwt.sign({userName: user.userName}, config.secret,{
-            expiresIn: 10080  // token到期时间设置
-          });
-          user.token = token;
-          user.save(function(err){
-            if (err) {
-              res.send(err);
-            }
-          });
-          res.json({
-            success: true,
-            message: '验证成功!',
-            token: 'Bearer ' + token,
-            userName: user.userName
-          });
-        } else {
-          res.send({success: false, message: '认证失败,密码错误!'});
-        }
-      });
-    }
-  });
-});
+// router.post('/accesstoken', (req, res) => {
+//   User.findOne({
+//     userName: req.body.userName
+//   }, (err, user) => {
+//     if (err) {
+//       throw err;
+//     }
+//     if (!user) {
+//       res.json({success: false, message:'认证失败,用户不存在!'});
+//     } else if(user) {
+//       // 检查密码是否正确
+//       user.comparePassword(req.body.passWord, (err, isMatch) => {
+//         if (isMatch && !err) {
+//           var token = jwt.sign({userName: user.userName}, config.secret,{
+//             expiresIn: 1440  // token到期时间设置
+//           });
+//           user.token = token;
+//           user.save(function(err){
+//             if (err) {
+//               res.send(err);
+//             }
+//           });
+//           res.json({
+//             success: true,
+//             message: '验证成功!',
+//             token: 'Bearer ' + token,
+//             userName: user.userName
+//           });
+//         } else {
+//           res.send({success: false, message: '认证失败,密码错误!'});
+//         }
+//       });
+//     }
+//   });
+// });
 
 
 // passport-http-bearer token 中间件验证
@@ -88,16 +88,12 @@ router.post('/login', (req, res) => {
   User.findOne({
     userName: req.body.userName
   }, (err, user) => {
-      // 检查密码是否正确
-      // 检查密码是否正确
+      // 检查密码是否正确      
       user.comparePassword(req.body.passWord, (err, isMatch) => {
         if (isMatch && !err) {
-          res.json({
-            code: 200,
-            msg: '验证成功!',
-          });
+          res.json({'code':200,'msg':'登录成功'})
         } else {
-          res.send({code:err, msg: isMatch});
+          res.json({'code':500,'msg':'密码错误'})
         }
       });
   });
