@@ -3,9 +3,9 @@ var router = express.Router();
 var User = require('../../models/User.js');
 var jwt = require('jsonwebtoken');
 var config = require('../../config/index');
-var passport = require('passport');
+// var passport = require('passport');
 
-require('./passport')(passport);
+// require('./passport')(passport);
 
 // 注册账户
 router.post('/register', function(req, res, next){
@@ -20,50 +20,48 @@ router.post('/register', function(req, res, next){
   });
 });
 
-// 检查用户名与密码并生成一个accesstoken如果验证通过
-// router.post('/accesstoken', (req, res) => {
-//   User.findOne({
-//     userName: req.body.userName
-//   }, (err, user) => {
-//     if (err) {
-//       throw err;
-//     }
-//     if (!user) {
-//       res.json({success: false, message:'认证失败,用户不存在!'});
-//     } else if(user) {
-//       // 检查密码是否正确
-//       user.comparePassword(req.body.passWord, (err, isMatch) => {
-//         if (isMatch && !err) {
-//           var token = jwt.sign({userName: user.userName}, config.secret,{
-//             expiresIn: 1440  // token到期时间设置
-//           });
-//           user.token = token;
-//           user.save(function(err){
-//             if (err) {
-//               res.send(err);
-//             }
-//           });
-//           res.json({
-//             success: true,
-//             message: '验证成功!',
-//             token: 'Bearer ' + token,
-//             userName: user.userName
-//           });
-//         } else {
-//           res.send({success: false, message: '认证失败,密码错误!'});
-//         }
-//       });
-//     }
-//   });
-// });
+// 检查用户名与密码,如果验证通过,生成一个token
+router.post('/accesstoken', (req, res) => {
+  User.findOne({
+    userName: req.body.userName
+  }, (err, user) => {
+    if(err){
+      return next(err);
+    }else{
+      if(!user){
+        res.json({success: false, message:'生成token失败,用户不存在!'});
+      }else{
+        // 检查密码是否正确
+        user.comparePassword(req.body.passWord, (err, isMatch) => {//验证密码
+          if(isMatch && !err){
+            user.token = jwt.sign({userName: user.userName}, config.secret,{expiresIn: '1'  });//expiresIn: token到期时间设置
+            user.save((err)=>{
+              if (err) {
+                res.send(err);
+              }
+            });
+          res.json({
+            success: true,
+            message: '成功生成token!',
+            token: 'Bearer ' + user.token,
+            userName: user.userName
+          });
+          }else{
+            res.send({success: false, message: '生成token失败,密码错误!'});
+          }
+        });
+      }
+    }
+  });
+});
 
 
 // passport-http-bearer token 中间件验证
 // 通过 header 发送 Authorization -> Bearer  + token
 // 或者通过 ?access_token = token
-router.get('/info',passport.authenticate('bearer', { session: false }),(req, res)=>{
-    res.json({userName: req.user.name});
-});
+// router.get('/info',passport.authenticate('bearer', { session: false }),(req, res)=>{
+//     res.json({userName: req.user.name});
+// });
 
 
 // 登录 并且验证密码
