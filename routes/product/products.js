@@ -2,9 +2,11 @@ var express = require('express');
 var router = express.Router();
 
 var Product = require('../../models/Product.js');
+var passport = require('passport');
+require('../user/passport')(passport);
 
 /* GET 获取产品列表. */
-router.get(`/getList`, function(req, res, next){
+router.get(`/getList`, passport.authenticate('bearer', { session: false }),function(req, res, next){
   Product.find(function(err, resp){
     if (err) return next(err);
     res.json(resp);

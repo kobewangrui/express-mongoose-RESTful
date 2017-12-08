@@ -5,16 +5,31 @@ var User = require('../../models/User');
 var Product = require('../../models/Product');
 var config = require('../../config/index');
 
-module.exports = function(passport){
+module.exports = (passport)=>{
     passport.use(new Strategy(
-        function(token, done) {
+        //user表权限设置
+        (token, done)=>{
             User.findOne({
                 token: token
-            }, function(err, user) {
-                if (err) {
+            }, (err, user)=>{
+                if(err){
                     return done(err);
                 }
-                if (!user) {
+                if(!user){
+                    return done(null, false);
+                }
+                return done(null, user);
+            });
+        },
+        //product权限设置
+        (token, done)=>{
+            Product.findOne({
+                token: token
+            }, (err, user)=>{
+                if(err){
+                    return done(err);
+                }
+                if(!user){
                     return done(null, false);
                 }
                 return done(null, user);

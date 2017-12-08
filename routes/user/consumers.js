@@ -3,9 +3,9 @@ var router = express.Router();
 var User = require('../../models/User.js');
 var jwt = require('jsonwebtoken');
 var config = require('../../config/index');
-// var passport = require('passport');
+var passport = require('passport');
 
-// require('./passport')(passport);
+require('./passport')(passport);
 
 // 注册账户
 router.post('/register', function(req, res, next){
@@ -67,9 +67,9 @@ router.post('/accesstoken', (req, res) => {
 // passport-http-bearer token 中间件验证
 // 通过 header 发送 Authorization -> Bearer  + token
 // 或者通过 ?access_token = token
-// router.get('/info',passport.authenticate('bearer', { session: false }),(req, res)=>{
-//     res.json({userName: req.user.name});
-// });
+router.get('/info',passport.authenticate('bearer', { session: false }),(req, res)=>{
+    res.json({userName: req.user.userName});
+});
 
 
 // 登录 并且验证密码
@@ -118,7 +118,7 @@ router.post('/logout',function(req,res,next){
 
 
 
-  router.get('/getUser', function(req, res, next){
+  router.get('/getUser', passport.authenticate('bearer', { session: false }),function(req, res, next){//权限验证获取user list
     User.find(function (err, resp) {
       if (err) return next(err);
       res.json(resp);
