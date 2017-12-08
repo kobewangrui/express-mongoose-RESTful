@@ -41,7 +41,7 @@ router.post('/accesstoken', (req, res) => {
         // 检查密码是否正确
         user.comparePassword(req.body.passWord, (err, isMatch) => {//验证密码
           if(isMatch && !err){
-            user.token = jwt.sign({userName: user.userName}, config.secret,{expiresIn: '1'  });//expiresIn: token到期时间设置
+            user.token = jwt.sign({userName: user.userName}, config.secret,{expiresIn: '10800'  });//expiresIn: token到期时间设置
             user.update({token:user.token},(err)=>{
               if (err) {
                 res.send(err);
