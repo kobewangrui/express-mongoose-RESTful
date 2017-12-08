@@ -144,10 +144,10 @@ router.get('/searchUser', function(req, res, next) {
 });
 
 // post查询年龄
-router.post('/searchs', function(req, res, next) {
+router.post('/searchs', passport.authenticate('bearer', { session: false }), function(req, res, next) {
   let arg = {};
   if(req.body.name !== '' && req.body.name !== undefined){
-      arg.name = req.body.name
+      arg.userName = req.body.name
   }
   if(req.body.age !== '' && req.body.age !== undefined){
     arg.age = req.body.age
