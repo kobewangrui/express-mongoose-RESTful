@@ -1,9 +1,7 @@
-var express = require('express');
-var router = express.Router();
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-module.exports = router;
+module.exports = (app) => {
+  app.get('/', (req, res) => {
+    res.json({ message: 'hello index!'});
+  });
+  app.use('/api/consumers',require('./user/consumers'));
+  app.use('/api/product', require('./product/products'));
+};

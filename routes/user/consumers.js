@@ -19,13 +19,12 @@ router.post('/register', function(req, res, next){
     });
     newUser.save((err)=>{
       if(err){
-        return res.json({'code':500,'msg':'该用户名/手机号已注册过'});
+        res.json({'code':500,'msg':'该用户名/手机号已注册过'});
       }else{
         res.json({'code':200,'msg':'注册成功'})
       }
     });
   }
-
 });
 
 // 检查用户名与密码,如果验证通过,生成一个token

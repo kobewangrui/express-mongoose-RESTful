@@ -8,6 +8,8 @@ var session = require('express-session');
 var passPort = require('passport');//用户认证模块
 var strategy = require ('passport-http-bearer');//token验证模块
 var config = require('./config/index')//全局配置
+var routes = require('./routes'); //路由配置
+
 
 
 var app = express();
@@ -45,10 +47,7 @@ app.use(session({
 app.use(passPort.initialize())//初始化passport模块
 
 // 路由
-app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users'));
-app.use('/api/product', require('./routes/product/products'));
-app.use('/api/consumers',require('./routes/user/consumers'));
+routes(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
