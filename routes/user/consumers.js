@@ -9,15 +9,23 @@ var config = require('../../config/index');
 
 // 注册账户
 router.post('/register', function(req, res, next){
-  let newUser = {//body x-www-urlencoded
-    userName:req.body.userName,
-    passWord:req.body.passWord,
-    phone:req.body.phone
-  };
-  User.create(newUser,function(err, post){
-    if (err) return next(err);
-    res.json({'code':200,'msg':'注册成功'})
-  });
+  if(!req.body.userName || !req.body.passWord){
+    res.json({'code':404,'msg':'用户名或密码为空'});
+  }else{
+    let newUser = User({//body x-www-urlencoded
+      userName:req.body.userName,
+      passWord:req.body.passWord,
+      phone:req.body.phone
+    });
+    newUser.save((err)=>{
+      if(err){
+        return res.json({'code':500,'msg':'该用户名/手机号已注册过'});
+      }else{
+        res.json({'code':200,'msg':'注册成功'})
+      }
+    });
+  }
+
 });
 
 // 检查用户名与密码,如果验证通过,生成一个token
@@ -35,7 +43,7 @@ router.post('/accesstoken', (req, res) => {
         user.comparePassword(req.body.passWord, (err, isMatch) => {//验证密码
           if(isMatch && !err){
             user.token = jwt.sign({userName: user.userName}, config.secret,{expiresIn: '1'  });//expiresIn: token到期时间设置
-            user.save((err)=>{
+            user.update({token:user.token},(err)=>{
               if (err) {
                 res.send(err);
               }
@@ -94,8 +102,6 @@ router.get('/',function(req,res,next){
       res.json({'code':200,'msg':'登录成功','userName':req.session.userName})
   }else{
       res.json({'code':500,'msg':'尚未登录'
-    
-    
     })
   }
 })
