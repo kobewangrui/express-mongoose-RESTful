@@ -1,9 +1,9 @@
 var passport = require('passport');
 var Strategy = require('passport-http-bearer').Strategy;
 
-var User = require('../../models/User');
-var Product = require('../../models/Product');
-var config = require('../../config/index');
+var User = require('../models/User');
+var Product = require('../models/Product');
+var config = require('../config/index');
 
 module.exports = (passport)=>{
     passport.use(new Strategy(

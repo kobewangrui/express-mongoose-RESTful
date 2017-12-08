@@ -5,7 +5,7 @@ var jwt = require('jsonwebtoken');
 var config = require('../../config/index');
 var passport = require('passport');
 
-require('./passport')(passport);
+require('../../passport/')(passport);
 
 // 注册账户
 router.post('/register', function(req, res, next){

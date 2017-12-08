@@ -3,7 +3,7 @@ var router = express.Router();
 
 var Product = require('../../models/Product.js');
 var passport = require('passport');
-require('../user/passport')(passport);
+require('../../passport/')(passport);
 
 /* GET 获取产品列表. */
 router.get(`/getList`, passport.authenticate('bearer', { session: false }),function(req, res, next){
